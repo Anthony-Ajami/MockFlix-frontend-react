@@ -71,6 +71,11 @@ function Row({ title, fetchUrl, isLargeRow }) {
                                 />
                             )}
                         </div>
+                        {isLargeRow ? (
+                            null
+                        ) : <p className='row__title'>
+                            {movie?.title || movie?.name || movie?.original_name}
+                        </p>}
                     </div>))}
             </div>
             <MovieViewModal

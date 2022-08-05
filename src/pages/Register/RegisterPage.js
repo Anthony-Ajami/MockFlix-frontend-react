@@ -1,4 +1,4 @@
-import './loginPage.scss'
+import './registerPage.scss'
 
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,20 +7,23 @@ import FormInput from '../../formInput/FormInput';
 
 import useAppStateContext from '../../hooks/useAppStateContext';
 
-import { loginInputs } from '../../data/formInputs';
-import { loginFormValidation } from '../../utils/formValidations';
+import { signUpInputs } from '../../data/formInputs';
+import { signUpFormValidation } from '../../utils/formValidations';
 
-import { login } from '../../services/accounts.services';
+import { register } from '../../services/accounts.services';
 
 const initialState = {
     email: '',
+    user_firstname: '',
+    user_lastname: '',
+    username: '',
     password: '',
 };
 
-function Login() {
+function RegisterPage() {
 
     useEffect(() => {
-        console.log('Login page rendered');
+        console.log('Register page rendered');
         setBackgroundColor('/images/login-background.jpg');
     }
         , []);
@@ -33,8 +36,6 @@ function Login() {
 
     const [formValues, setFormValues] = useState(initialState);
     const [formErrors, setFormErrors] = useState({});
-    const { dispatch } = useAppStateContext();
-
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -42,31 +43,29 @@ function Login() {
 
         const noErrors = Object.values(formErrors).every((err) => err === '');
         if (noErrors) {
-            // calling the backend api 'login' to login the user
-            login(formValues, dispatch, navigate);
-            document.body.style.backgroundImage = 'none';
-            document.body.style.backgroundColor = '#111';
+            // calling the backend api 'signup' to register the user
+            register(formValues, navigate);
         }
     };
 
     const onInputChange = (e) => {
         let { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-        loginFormValidation(setFormErrors, name, value);
+        signUpFormValidation(setFormErrors, name, value);
     };
 
     return (
         <div className='Auth-form-container'>
             <div>
                 <img
-                    src='/images/logo.png'
-                    alt='MockFlix Logo'
+                    src={'/images/logo.png'}
+                    alt='Logo de la République française (1999)'
                     height={70}
                     width={200}
                 />
             </div>
             <form className='Auth-form' onSubmit={handleSubmit}>
-                {loginInputs.map((input) => (
+                {signUpInputs.map((input) => (
                     <FormInput
                         key={input.id}
                         {...input}
@@ -77,18 +76,19 @@ function Login() {
                 ))}
 
                 <button type='submit' className='loginButton'>
-                    Sign in
+                    Sign up
                 </button>
 
                 <div className='noPassword'>
-                    <span>Don't have a password yet?</span>
-                    <Link to='/register' className='SMS_Signup'>
-                        Sign up
+                    <span>Already have an account?</span>
+                    <Link to='/login' className='SMS_Signup'>
+                        Sign In
                     </Link>
                 </div>
             </form>
         </div>
     )
+
 }
 
-export default Login
+export default RegisterPage;

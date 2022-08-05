@@ -16,6 +16,8 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
 
     const [reviews, setReviews] = useState([])
 
+    const [showAddReview, setShowAddReview] = useState(false)
+
     useEffect(() => {
         async function fetchData() {
             const request = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/reviews?api_key=${requests.API_KEY}&language=en-US&page=1`)
@@ -25,6 +27,17 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
     }
         , [movie.id]) // to update the reviews when the movie id changes
 
+
+    const handleAddReview = () => {
+        setShowAddReview(!showAddReview)
+    }
+
+    const handleClosePopup = () => {
+        handleClickPopup()
+        if (showAddReview) {
+            setShowAddReview(false)
+        }
+    }
 
     return (
         <div className={`viewModal ${popup && "open"}`}>
@@ -42,18 +55,19 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
                                 <PlayArrow /> Play
                             </button>
                         </Link>
-                        <button className='viewModal__button viewModal__button--review'>
+                        <button onClick={handleAddReview} className='viewModal__button viewModal__button--review'>
                             <Reviews /> Write Review
                         </button>
                     </div>
-                    <div className='viewModal__addReview'>
+                    <div className='viewModal__addReview' style={showAddReview ? {} : { display: 'none' }}>
                         <div className='viewModal__addReview__rating'>
                             <p className='viewModal__addReview__rating viewModal__addReview__rating--text'>
                                 Rating:
                             </p>
                             <input className='viewModal__addReview__rating viewModal__addReview__rating--input' type='number' min='1' max='10' step='0.1' />
                             {                            //TODO: add post button functionality
-                            }                                <button className='viewModal__addReview__rating viewModal__addReview__rating--button'>
+                            }
+                            <button className='viewModal__addReview__rating viewModal__addReview__rating--button'>
                                 Post
                             </button>
                         </div>
@@ -62,19 +76,19 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
                     <div className='viewModal__addReview__reviews'>
 
                         <div className='viewModal__reviews'>
-                            Reviews
+                            {reviews.length > 0 ? <p>Reviews</p> : <p>No reviews yet for this movie...</p>}
                             {reviews.map(review => (
                                 reviews.length > 0 ?
                                     <div className='viewModal__review' key={review.id}>
                                         <p className='viewModal__review--author'>Author: {review.author}</p>
-                                        <p className='viewModal__review--rating' style={review.author_details.rating > 5 ? { color: 'green' } : { color: 'red' }}>Rating: {review.author_details.rating} / 10</p>
+                                        <p className='viewModal__review--rating' style={review.author_details.rating ? review.author_details.rating > 5 ? { color: 'green' } : { color: 'red' } : { color: 'white', display: 'none' }}>Rating: {review.author_details.rating} / 10</p>
                                         <p className='viewModal__review--content'>{review.content}</p>
                                         <p className='viewModal__review--date'>Published: {review.updated_at}</p>
                                     </div>
                                     : <p className='viewModal__review--noReviews'>No reviews yet</p>
                             ))}
                         </div>
-                        <button className='viewModal__close' onClick={handleClickPopup}>
+                        <button className='viewModal__close' onClick={handleClosePopup}>
                             <Cancel fontSize='large' />
                         </button>
                     </div>

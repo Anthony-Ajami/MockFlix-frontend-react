@@ -44,7 +44,7 @@ function Footer() {
                 </ul>
                 <div className='footer__copyright'>
                     <p>
-                        MockFlix © 2022. All rights reserved.
+                        MockFlix © 2022. A project by Anthony Ajami.
                     </p>
                 </div>
             </div>

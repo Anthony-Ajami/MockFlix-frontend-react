@@ -1,15 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import Banner from '../components/Banner/Banner';
 import Row from '../components/Row/Row';
 import requests from '../config/Requests';
-import { UserContext } from '../context/UserContext';
-import { useContext } from "react";
 
 function Home() {
-
-    const { user, setUser } = useContext(UserContext);
 
     return (
         <div className="App">
@@ -20,18 +16,16 @@ function Home() {
             <Banner />
 
             <Row
-                title="Netflix Originals"
-                fetchUrl={requests.fetchNetflixOriginals}
+                title="Top Rated"
+                fetchUrl={requests.fetchTopRated}
             />
+
             <Row
                 title="Trending Now"
                 fetchUrl={requests.fetchTrending}
                 isLargeRow={true}
             />
-            <Row
-                title="Top Rated"
-                fetchUrl={requests.fetchTopRated}
-            />
+
             <Row
                 title="Action Movies"
                 fetchUrl={requests.fetchActionMovies}
