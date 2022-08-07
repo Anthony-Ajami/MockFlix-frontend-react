@@ -1,32 +1,29 @@
-import './registerPage.scss'
-
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+
+import { addContact } from '../../services/accounts.services.js';
 
 import FormInput from '../../formInput/FormInput';
 
-import useAppStateContext from '../../hooks/useAppStateContext';
-
-import { signUpInputs } from '../../data/formInputs';
-import { signUpFormValidation } from '../../utils/formValidations';
-
-import { register } from '../../services/accounts.services';
+import { contactInputs } from '../../data/formInputs';
+import { contactFormValidation } from '../../utils/formValidations';
 
 const initialState = {
     email: '',
-    user_firstname: '',
-    user_lastname: '',
-    username: '',
-    password: '',
+    firstName: '',
+    lastName: '',
+    phoneNumber: '',
 };
 
-function RegisterPage() {
+function ContactPage() {
+
+    const location = useLocation();
+    const username = location.state.username;
 
     useEffect(() => {
-        console.log('Register page rendered');
         setBackgroundColor('/images/login-background.jpg');
     }
-        , []);
+        , [username]);
 
     const setBackgroundColor = (image) => {
         document.body.style.backgroundImage = `url(${image})`;
@@ -43,15 +40,14 @@ function RegisterPage() {
 
         const noErrors = Object.values(formErrors).every((err) => err === '');
         if (noErrors) {
-            // calling the backend api 'signup' to register the user
-            register(formValues, navigate);
+            addContact(formValues, navigate, username);
         }
     };
 
     const onInputChange = (e) => {
         let { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-        signUpFormValidation(setFormErrors, name, value);
+        contactFormValidation(setFormErrors, name, value);
     };
 
     return (
@@ -59,13 +55,13 @@ function RegisterPage() {
             <div>
                 <img
                     src={'/images/logo.png'}
-                    alt='Logo de la République française (1999)'
+                    alt='MockFlix Logo'
                     height={70}
                     width={200}
                 />
             </div>
             <form className='Auth-form' onSubmit={handleSubmit}>
-                {signUpInputs.map((input) => (
+                {contactInputs.map((input) => (
                     <FormInput
                         key={input.id}
                         {...input}
@@ -76,19 +72,13 @@ function RegisterPage() {
                 ))}
 
                 <button type='submit' className='loginButton'>
-                    Sign up
+                    Next
                 </button>
 
-                <div className='noPassword'>
-                    <span>Already have an account?</span>
-                    <Link to='/login' className='SMS_Signup'>
-                        Sign In
-                    </Link>
-                </div>
             </form>
         </div>
     )
 
 }
 
-export default RegisterPage;
+export default ContactPage;

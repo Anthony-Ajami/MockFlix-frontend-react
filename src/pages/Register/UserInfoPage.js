@@ -1,23 +1,19 @@
-import './loginPage.scss'
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
 
+import { register } from '../../services/accounts.services.js';
+
 import FormInput from '../../formInput/FormInput';
 
-import useAppStateContext from '../../hooks/useAppStateContext';
-
-import { loginInputs } from '../../data/formInputs';
-import { loginFormValidation } from '../../utils/formValidations';
-
-import { login } from '../../services/accounts.services';
+import { registerInputs } from '../../data/formInputs';
+import { registerFormValidation } from '../../utils/formValidations';
 
 const initialState = {
     username: '',
     password: '',
 };
 
-function Login() {
+function AddressPage() {
 
     useEffect(() => {
         setBackgroundColor('/images/login-background.jpg');
@@ -32,8 +28,6 @@ function Login() {
 
     const [formValues, setFormValues] = useState(initialState);
     const [formErrors, setFormErrors] = useState({});
-    const { dispatch } = useAppStateContext();
-
     const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
@@ -41,31 +35,29 @@ function Login() {
 
         const noErrors = Object.values(formErrors).every((err) => err === '');
         if (noErrors) {
-            // calling the backend api 'login' to login the user
-            login(formValues, dispatch, navigate);
-            document.body.style.backgroundImage = 'none';
-            document.body.style.backgroundColor = '#111';
+            // calling the backend register function, then navigating to ContactPage
+            register(formValues, navigate);
         }
-    };
+    }
 
     const onInputChange = (e) => {
         let { name, value } = e.target;
         setFormValues({ ...formValues, [name]: value });
-        loginFormValidation(setFormErrors, name, value);
+        registerFormValidation(setFormErrors, name, value);
     };
 
     return (
         <div className='Auth-form-container'>
             <div>
                 <img
-                    src='/images/logo.png'
+                    src={'/images/logo.png'}
                     alt='MockFlix Logo'
                     height={70}
                     width={200}
                 />
             </div>
             <form className='Auth-form' onSubmit={handleSubmit}>
-                {loginInputs.map((input) => (
+                {registerInputs.map((input) => (
                     <FormInput
                         key={input.id}
                         {...input}
@@ -76,13 +68,13 @@ function Login() {
                 ))}
 
                 <button type='submit' className='loginButton'>
-                    Sign in
+                    Sign Up
                 </button>
 
                 <div className='noPassword'>
-                    <span>Don't have an account yet?</span>
-                    <Link to='/register/user' className='SMS_Signup'>
-                        Sign up
+                    <span>Already have an account?</span>
+                    <Link to='/login' className='SMS_Signup'>
+                        Sign In
                     </Link>
                 </div>
             </form>
@@ -90,4 +82,4 @@ function Login() {
     )
 }
 
-export default Login
+export default AddressPage;

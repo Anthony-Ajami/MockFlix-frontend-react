@@ -3,7 +3,10 @@ import React, { useEffect } from "react";
 import Home from './pages/Home';
 import Video from './components/Video/Video';
 import LoginPage from './pages/Login/LoginPage';
-import RegisterPage from './pages/Register/RegisterPage';
+import ContactPage from './pages/Register/ContactPage';
+import AddressPage from './pages/Register/AddressPage';
+import UserInfoPage from './pages/Register/UserInfoPage';
+import SubscriptionPage from './pages/Register/SubscriptionPage';
 
 import { ToastContainer } from 'react-toastify';
 
@@ -59,9 +62,23 @@ function App() {
                 <Route path='login' element={<LoginPage />} />
               </Route>
 
+
               <Route element={<PublicRoute />}>
-                <Route path='register' element={<RegisterPage />} />
+                <Route path='register/user' element={<UserInfoPage />} />
               </Route>
+
+              <Route element={<PublicRoute />}>
+                <Route path='register/contact' element={<ContactPage />} />
+              </Route>
+
+              <Route element={<PublicRoute />}>
+                <Route path='register/address' element={<AddressPage />} />
+              </Route>
+
+              <Route element={<PublicRoute />}>
+                <Route path='register/role' element={<SubscriptionPage />} />
+              </Route>
+
             </Routes>
           </div>
         </div>

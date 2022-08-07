@@ -21,6 +21,11 @@
             cursor: pointer;
             color: white;
             font-size: 17px;
+
+            &:hover {
+                background-color: #b40510;
+                color: white;
+            }
         }
 
         .noPassword {
