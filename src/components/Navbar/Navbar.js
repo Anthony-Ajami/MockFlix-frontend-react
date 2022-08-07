@@ -2,10 +2,15 @@ import React from "react";
 import './navbar.scss'
 import { useState } from "react";
 
-import { MenuOutlined, SearchOutlined, CardGiftcardOutlined, NotificationsOutlined } from "@mui/icons-material";
+// State Context
+import useAppStateContext from '../../hooks/useAppStateContext';
+
+import { MenuOutlined, LogoutOutlined } from "@mui/icons-material";
 
 
 function Navbar() {
+
+    const { dispatch } = useAppStateContext();
 
     const [navBlack, setNavBlack] = useState(false);
 
@@ -23,34 +28,24 @@ function Navbar() {
         document.addEventListener('scroll', transitionNav);
     });
 
+    const handleLogout = () => {
+        dispatch({ type: 'Logout' });
+    };
+
+    const logoClick = () => {
+        window.scrollTo(0, 0);
+    }
+
     return (
         <div className={`navbar ${navBlack || toggleMenu ? "navbar--black" : "navbar--transparent"} ${toggleMenu && "show"}`}>
             <button onClick={handleToggleMenu} className="navbar__burger">
                 <MenuOutlined />
             </button>
-            <img className="navbar__logo" src="../images/logo.png" alt="Mockflix logo" />
-            <nav className="navbar__links">
-                <a href="/" className="navbar__link">Home</a>
-                <a href="/" className="navbar__link">Series</a>
-                <a href="/" className="navbar__link">Movies</a>
-            </nav>
+            <img onClick={logoClick} className="navbar__logo" src="../images/logo.png" alt="Mockflix logo" />
             <div className="navbar__actions">
-                <a href="/" className="navbar__action">
-                    <SearchOutlined />
-                </a>
-                <a href="/" className="navbar__action">
-                    LIVE
-                </a>
-                <a href="/" className="navbar__action">
-                    <CardGiftcardOutlined />
-                </a>
-                <a href="/" className="navbar__action">
-                    <NotificationsOutlined />
-                </a>
-                <a href="/" className="navbar__action">
-                    <img src="../images/avatar.jpg" alt="avatar" />
-                </a>
-
+                <button onClick={handleLogout} className="logout__button">
+                    <LogoutOutlined />
+                </button>
             </div>
         </div>
     )

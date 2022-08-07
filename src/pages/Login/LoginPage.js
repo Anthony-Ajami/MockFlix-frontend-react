@@ -13,14 +13,13 @@ import { loginFormValidation } from '../../utils/formValidations';
 import { login } from '../../services/accounts.services';
 
 const initialState = {
-    email: '',
+    username: '',
     password: '',
 };
 
 function Login() {
 
     useEffect(() => {
-        console.log('Login page rendered');
         setBackgroundColor('/images/login-background.jpg');
     }
         , []);

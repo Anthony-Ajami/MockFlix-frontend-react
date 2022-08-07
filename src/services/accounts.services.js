@@ -1,26 +1,31 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
+
+const baseUrl = 'http://localhost:8080/api';
 
 export const login = async (formValues, dispatch, navigate) => {
-  // await axios
-  //   .post('/accounts/login', formValues)
-  //   .then((response) => {
-  //     if (response.status === 200) {
-  //       console.log("You're logged in!");
 
-  //       dispatch({
-  //         type: 'Login',
-  //         payload: response.data.data,
-  //       });
+  console.log(formValues);
+  const username = formValues.username;
+  const password = formValues.password;
 
-  //       navigate('/');
-  //     } else {
-  //       console.log("Error");
-  //     }
-  //   })
-  //   .catch((error) => {
-  //     console.error('Login form: There was an error!', error);
-  //   });
-  navigate('/');
+  await axios
+    .get(`${baseUrl}/login?username=${username}&password=${password}`)
+    .then((res) => {
+      if (res.status === 200) {
+        console.log(res.data);
+        dispatch({
+          type: 'Login',
+          payload: res.data,
+        });
+        navigate('/');
+      } else {
+        toast.error('Invalid username or password');
+      }
+    }).catch((err) => {
+      toast.error('Oops! Something went wrong');
+    }
+    );
 };
 
 export const register = async (formValues, navigate) => {

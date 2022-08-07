@@ -39,9 +39,9 @@ export const signUpInputs = [
 export const loginInputs = [
   {
     id: 1,
-    name: 'email',
+    name: 'username',
     type: 'text',
-    placeholder: 'Email Address',
+    placeholder: 'Username',
     required: true,
   },
   {

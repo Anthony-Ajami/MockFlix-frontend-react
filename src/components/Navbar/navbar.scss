@@ -76,6 +76,14 @@
         justify-content: flex-end;
         flex: 1;
 
+        .logout__button {
+            color: white;
+
+            &:hover {
+                cursor: pointer;
+            }
+        }
+
         .navbar__action {
             margin-left: 10px;
 
