@@ -61,6 +61,25 @@ export const registerFormValidation = (setFormErrors, name, value) => {
   });
 };
 
+export const ratingFormValidation = (setFormErrors, name, value) => {
+  setFormErrors((prev) => {
+    const errorStateObj = { ...prev, [name]: '' };
+
+    switch (name) {
+      case 'rating':
+        if (value < 1 || value > 10) {
+          errorStateObj['rating'] = 'Rating must be between 1 and 5';
+        }
+        break;
+
+      default:
+        break;
+    }
+
+    return errorStateObj;
+  });
+}
+
 
 export const loginFormValidation = (setFormErrors, name, value) => {
   setFormErrors((prev) => {

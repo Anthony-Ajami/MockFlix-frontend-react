@@ -79,6 +79,23 @@
         border-color: rgb(60, 59, 59);
         border-width: 3px;
         border-radius: 4px;
+        padding: 5px;
+
+        .loginButton {
+            width: 100%;
+            margin: 10px 0;
+            padding: 15px;
+            background-color: #E50914;
+            border: none;
+            cursor: pointer;
+            color: white;
+            font-size: 17px;
+
+            &:hover {
+                background-color: #b40510;
+                color: white;
+            }
+        }
 
         &__text {
             color: #fff;
@@ -143,9 +160,13 @@
             margin-bottom: 0.5rem;
         }
 
+        &--title {
+            font-size: 1.1rem;
+        }
+
         &--content {
-            margin-bottom: 0.5rem;
             font-style: italic;
+            font-size: 0.9rem;
         }
 
         &--rating {

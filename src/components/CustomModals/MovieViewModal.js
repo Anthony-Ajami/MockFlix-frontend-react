@@ -1,12 +1,42 @@
 import React from 'react'
 import { Cancel, PlayArrow, Reviews } from "@mui/icons-material";
 import './movieViewModal.scss'
-import requests from '../../config/Requests';
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
 import axios from 'axios'
+import { postRating, getRatings } from '../../services/ratings.services'
+import { ratingInputs } from '../../data/formInputs';
+import FormInput from '../../formInput/FormInput';
+
+import { incrementViewCount } from '../../services/movies.services'
+
+import { ratingFormValidation } from '../../utils/formValidations';
 
 function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
+
+    const userProfile = JSON.parse(
+        window.localStorage.getItem('MockflixProfile')
+    );
+    const username = userProfile.username;
+
+    const initialState = {
+        rating: 0,
+        ratingTitle: '',
+        ratingContent: '',
+        userId: username,
+        movieId: movie.id,
+    };
+
+    const [formValues, setFormValues] = useState(initialState);
+    const [formErrors, setFormErrors] = useState({});
+    const [reviews, setReviews] = useState([])
+    const [showAddReview, setShowAddReview] = useState(false)
+    const [movieId, setMovieId] = useState(movie.id)
+
+    const onInputChange = (e) => {
+        let { name, value } = e.target;
+        setFormValues({ ...formValues, [name]: value });
+        ratingFormValidation(setFormErrors, name, value);
+    };
 
     const bannerStyle = {
         backgroundSize: 'cover',
@@ -14,22 +44,29 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
         backgroundImage: backgroundImage,
     };
 
-    const [reviews, setReviews] = useState([])
-
-    const [showAddReview, setShowAddReview] = useState(false)
-
     useEffect(() => {
         async function fetchData() {
-            const request = await axios.get(`https://api.themoviedb.org/3/movie/${movie.id}/reviews?api_key=${requests.API_KEY}&language=en-US&page=1`)
-            setReviews(request.data.results)
+            const { data } = await getRatings(movie.id)
+            console.log(movie.id)
+            setReviews(data)
         }
         fetchData()
     }
-        , [movie.id]) // to update the reviews when the movie id changes
+        , [movie.id])
 
 
-    const handleAddReview = () => {
+    const handlePostRating = async (rating) => {
+        postRating(formValues, movieId);
+    }
+
+    const handlePlayMovie = () => {
+        window.open(`https://www.youtube.com/watch?v=dQw4w9WgXcQ`, '_blank')
+        incrementViewCount(movie.id)
+    }
+
+    const handleAddReviewBox = () => {
         setShowAddReview(!showAddReview)
+        setMovieId(movie.id)
     }
 
     const handleClosePopup = () => {
@@ -50,28 +87,30 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
                         {movie?.description}
                     </p>
                     <div className='viewModal__buttons'>
-                        <Link to={`/video/${movie?.id}`}>
-                            <button className='viewModal__button viewModal__button--play'>
-                                <PlayArrow /> Play
-                            </button>
-                        </Link>
-                        <button onClick={handleAddReview} className='viewModal__button viewModal__button--review'>
+                        <button className='viewModal__button viewModal__button--play' onClick={handlePlayMovie}>
+                            <PlayArrow /> Play
+                        </button>
+                        <button onClick={handleAddReviewBox} className='viewModal__button viewModal__button--review'>
                             <Reviews /> Write Review
                         </button>
                     </div>
+                    <p>Views: {movie?.viewCount}</p>
                     <div className='viewModal__addReview' style={showAddReview ? {} : { display: 'none' }}>
-                        <div className='viewModal__addReview__rating'>
-                            <p className='viewModal__addReview__rating viewModal__addReview__rating--text'>
-                                Rating:
-                            </p>
-                            <input className='viewModal__addReview__rating viewModal__addReview__rating--input' type='number' min='1' max='10' step='0.1' />
-                            {                            //TODO: add post button functionality
-                            }
-                            <button className='viewModal__addReview__rating viewModal__addReview__rating--button'>
-                                Post
+                        <form className='Auth-form' onSubmit={handlePostRating}>
+                            {ratingInputs.map((input) => (
+                                <FormInput
+                                    key={input.id}
+                                    {...input}
+                                    value={formValues[input.name]}
+                                    errorMessage={formErrors[input.name] && formErrors[input.name]}
+                                    onChange={onInputChange}
+                                />
+                            ))}
+
+                            <button type='submit' className='loginButton'>
+                                Add Rating
                             </button>
-                        </div>
-                        <textarea placeholder="Tell others what do you think about this movie..." className='viewModal__addReview__text' type='text' />
+                        </form>
                     </div>
                     <div className='viewModal__addReview__reviews'>
 
@@ -79,11 +118,11 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
                             {reviews.length > 0 ? <p>Reviews</p> : <p>No reviews yet for this movie...</p>}
                             {reviews.map(review => (
                                 reviews.length > 0 ?
-                                    <div className='viewModal__review' key={review.id}>
-                                        <p className='viewModal__review--author'>Author: {review.author}</p>
-                                        <p className='viewModal__review--rating' style={review.author_details.rating ? review.author_details.rating > 5 ? { color: 'green' } : { color: 'red' } : { color: 'white', display: 'none' }}>Rating: {review.author_details.rating} / 10</p>
-                                        <p className='viewModal__review--content'>{review.content}</p>
-                                        <p className='viewModal__review--date'>Published: {review.updated_at}</p>
+                                    <div className='viewModal__review' key={review._id}>
+                                        <p className='viewModal__review--author'>Author: {review.userId}</p>
+                                        <p className='viewModal__review--rating' style={review.rating ? review.rating > 5 ? { color: 'green' } : { color: 'red' } : { color: 'white', display: 'none' }}>Rating: {review.rating} / 10</p>
+                                        <p className='viewModal__review--title'>{review.commentTitle}</p>
+                                        <p className='viewModal__review--content'>{review.commentContent}</p>
                                     </div>
                                     : <p className='viewModal__review--noReviews'>No reviews yet</p>
                             ))}

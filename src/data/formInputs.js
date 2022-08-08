@@ -82,6 +82,13 @@ export const registerInputs = [
     placeholder: 'Password',
     required: true,
   },
+  {
+    id: 3,
+    name: 'confirmPassword',
+    type: 'password',
+    placeholder: 'Confirm Password',
+    required: true,
+  },
 ];
 
 export const loginInputs = [
@@ -100,3 +107,47 @@ export const loginInputs = [
     required: true,
   },
 ];
+
+export const ratingInputs = [
+  {
+    id: 1,
+    max: 10,
+    min: 1,
+    step: 1,
+    name: 'rating',
+    type: 'number',
+    placeholder: 'Rating',
+    required: true,
+  },
+  {
+    id: 2,
+    name: 'ratingTitle',
+    type: 'text',
+    placeholder: 'Rating Title',
+    required: true,
+  },
+  {
+    id: 3,
+    name: 'ratingContent',
+    type: 'text',
+    placeholder: 'Rating Content',
+    required: true,
+  },
+  {
+    id: 4,
+    name: 'userId',
+    type: 'text',
+    placeholder: 'User Id',
+    required: true,
+    hidden: true,
+  },
+  {
+    id: 5,
+    name: 'movieId',
+    type: 'text',
+    placeholder: 'Movie Id',
+    required: true,
+    hidden: true,
+  },
+];
+

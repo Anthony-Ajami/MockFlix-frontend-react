@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Footer from '../components/Footer/Footer';
 import Navbar from '../components/Navbar/Navbar';
 import Banner from '../components/Banner/Banner';
@@ -6,6 +6,18 @@ import Row from '../components/Row/Row';
 import requests from '../config/Requests';
 
 function Home() {
+
+    useEffect(() => {
+        setBackgroundColor('/images/home-background.jpg');
+    }
+
+        , []);
+
+    const setBackgroundColor = (image) => {
+        document.body.style.backgroundImage = 'none';
+        document.body.style.backgroundSize = 'cover';
+        document.body.style.backgroundPosition = 'center';
+    }
 
     return (
         <div className="App">
@@ -16,8 +28,8 @@ function Home() {
             <Banner />
 
             <Row
-                title="Top Rated"
-                fetchUrl={requests.fetchTopRated}
+                title="Mockflix Most Viewed"
+                fetchUrl={requests.fetchTop10Viewed}
             />
 
             <Row

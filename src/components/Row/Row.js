@@ -12,9 +12,9 @@ const movie00 = {
     overview: '',
     release_date: '',
     genre: '',
-    id: 438148,
+    id: 111,
+    view_count: 0,
 };
-
 
 function Row({ title, fetchUrl, isLargeRow }) {
 
