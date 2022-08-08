@@ -44,10 +44,10 @@ function MovieViewModal({ movie, backgroundImage, handleClickPopup, popup }) {
             <div className='viewModal__banner' style={bannerStyle}>
                 <div className='viewModal__content'>
                     <h3 className='viewModal__title'>
-                        {movie?.title || movie?.name || movie?.original_name}
+                        {movie?.title}
                     </h3>
                     <p className='viewModal__description'>
-                        {movie?.overview}
+                        {movie?.description}
                     </p>
                     <div className='viewModal__buttons'>
                         <Link to={`/video/${movie?.id}`}>

@@ -14,10 +14,7 @@ export const login = async (formValues, dispatch, navigate) => {
     .then((res) => {
       if (res.status === 200) {
         console.log(res.data);
-        dispatch({
-          type: 'Login',
-          payload: res.data,
-        });
+        dispatch({ type: 'Login', payload: res.data });
         navigate('/');
       } else {
         toast.error('Invalid username or password');
@@ -95,7 +92,7 @@ export const addAddress = async (formValues, navigate, username) => {
     });
 }
 
-export const addRole = async (roleName, navigate, username) => {
+export const addRole = async (roleName, navigate, username, dispatch) => {
   const role = roleName;
 
   await axios
@@ -103,7 +100,9 @@ export const addRole = async (roleName, navigate, username) => {
     .then((response) => {
       if (response.status === 200) {
         console.log("Role added to existing user!");
-        navigate('/login');
+        dispatch({ type: 'Login', payload: response.data });
+        navigate('/');
+
       } else {
         console.log("Error");
       }

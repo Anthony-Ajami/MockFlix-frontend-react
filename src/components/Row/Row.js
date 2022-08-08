@@ -11,7 +11,7 @@ const movie00 = {
     backdrop_path: "/698FjyzLdpgXmUSr63LaRwblTmx.jpg",
     overview: '',
     release_date: '',
-    vote_average: '',
+    genre: '',
     id: 438148,
 };
 
@@ -41,7 +41,7 @@ function Row({ title, fetchUrl, isLargeRow }) {
     useEffect(() => {
         async function fetchData() {
             const request = await axios.get(fetchUrl)
-            setMovies(request.data.results)
+            setMovies(request.data)
         }
         fetchData()
     }, [fetchUrl])
@@ -57,7 +57,7 @@ function Row({ title, fetchUrl, isLargeRow }) {
                                 <img
                                     className='row__image'
                                     key={movie.id}
-                                    src={`${baseUrl}${movie.poster_path}`}
+                                    src={`${baseUrl}${movie.posterPath}`}
                                     alt={movie?.title || movie?.name || movie?.original_name}
                                     onClick={() => onClick(movie)}
                                 />
@@ -65,8 +65,8 @@ function Row({ title, fetchUrl, isLargeRow }) {
                                 <img
                                     className='row__image'
                                     key={movie.id}
-                                    src={`${baseUrl}${movie.backdrop_path}`}
-                                    alt={movie?.title || movie?.name || movie?.original_name}
+                                    src={`${baseUrl}${movie.backdropPath}`}
+                                    alt={movie?.title}
                                     onClick={() => onClick(movie)}
                                 />
                             )}
@@ -74,13 +74,13 @@ function Row({ title, fetchUrl, isLargeRow }) {
                         {isLargeRow ? (
                             null
                         ) : <p className='row__title'>
-                            {movie?.title || movie?.name || movie?.original_name}
+                            {movie?.title}
                         </p>}
                     </div>))}
             </div>
             <MovieViewModal
                 movie={modalMovie}
-                backgroundImage={`url( ${baseUrl}${modalMovie.backdrop_path})`}
+                backgroundImage={`url( ${baseUrl}${modalMovie.backdropPath})`}
                 handleClickPopup={handleClickPopup}
                 popup={popup}
             />

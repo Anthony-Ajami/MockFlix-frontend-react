@@ -17,7 +17,7 @@ function Banner() {
     useEffect(() => {
         async function fetchData() {
             const request = await axios.get(requests.fetchTrending)
-            setMovie(request.data.results[Math.floor(Math.random() * request.data.results.length)])
+            setMovie(request.data[Math.floor(Math.random() * request.data.length)])
         }
         fetchData()
     }, [])
@@ -34,7 +34,7 @@ function Banner() {
         backgroundSize: 'cover',
         backgroundPosition: 'center center',
         backgroundImage: `url(
-            "https://image.tmdb.org/t/p/original/${movie.backdrop_path}"
+            "https://image.tmdb.org/t/p/original/${movie.backdropPath}"
         )`,
     };
 
@@ -42,10 +42,10 @@ function Banner() {
         <header className='banner' style={bannerStyle}>
             <div className='banner__content'>
                 <h1 className='banner__title'>
-                    {movie?.title || movie?.name || movie?.original_name}
+                    {movie?.title}
                 </h1>
                 <p className='banner__description'>
-                    {truncate(movie?.overview, 190)}
+                    {truncate(movie?.description, 190)}
                 </p>
                 <div className='banner__buttons'>
                     <Link to={`/video/${movie?.id}`}>
@@ -63,7 +63,7 @@ function Banner() {
                 backgroundSize='cover'
                 backgroundPosition='center center'
                 backgroundImage={`url(
-                    "https://image.tmdb.org/t/p/original/${movie.backdrop_path}"
+                    "https://image.tmdb.org/t/p/original/${movie.backdropPath}"
                 )`}
                 handleClickPopup={handleClickPopup}
                 popup={popup}

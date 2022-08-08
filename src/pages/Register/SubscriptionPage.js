@@ -3,6 +3,8 @@ import { useNavigate, useLocation } from 'react-router-dom';
 
 import { addRole } from '../../services/accounts.services.js';
 
+import useAppStateContext from '../../hooks/useAppStateContext';
+
 function SubscriptionPage() {
 
     const location = useLocation();
@@ -20,20 +22,21 @@ function SubscriptionPage() {
     }
 
     const navigate = useNavigate();
+    const { dispatch } = useAppStateContext();
 
     const handleBasic = async (e) => {
         e.preventDefault();
-        addRole('Basic User', navigate, username);
+        addRole('Basic User', navigate, username, dispatch);
     }
 
     const handlePremium = async (e) => {
         e.preventDefault();
-        addRole('Premium User', navigate, username);
+        addRole('Premium User', navigate, username, dispatch);
     }
 
     const handleUltimate = async (e) => {
         e.preventDefault();
-        addRole('Ultimate User', navigate, username);
+        addRole('Ultimate User', navigate, username, dispatch);
     }
 
     return (
