@@ -2,7 +2,6 @@ import React from 'react'
 import { Cancel, PlayArrow, Reviews } from "@mui/icons-material";
 import './movieViewModal.scss'
 import { useState, useEffect } from 'react'
-import axios from 'axios'
 import { postRating, getRatings } from '../../services/ratings.services'
 import { ratingInputs } from '../../data/formInputs';
 import FormInput from '../../formInput/FormInput';
